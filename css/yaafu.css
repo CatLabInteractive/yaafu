@@ -1,0 +1,71 @@
+#yaafu {
+	min-height: 100px;
+	border: 2px dashed #ddd;
+}
+
+.yf-preview{
+	background: rgba(255,255,255,0.8);
+	position: relative;
+	display: inline-block;
+	margin: 17px;
+	vertical-align: top;
+	border: 1px solid #acacac;
+	padding: 6px 6px 6px 6px;
+	opacity: 1;
+}
+
+.yf-preview .yf-filename {
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.yf-preview.yf-processing {
+	opacity: .6;
+}
+
+.yf-preview.yf-processing img{
+	opacity: .5;
+}
+
+.yf-preview .yf-details {
+	width: 100px;
+	height: 100px;
+	position: relative;
+	background: #ebebeb;
+	padding: 5px;
+	margin-bottom: 22px;
+}
+
+.yf-preview .yf-error-mark,
+.yf-preview .yf-success-mark {
+    background-image: url("../images/spritemap@2x.png");
+    -webkit-background-size: 428px 406px;
+    -moz-background-size: 428px 406px;
+    background-size: 428px 406px;
+  }
+
+.yf-preview .yf-error-mark,
+.yf-preview .yf-success-mark {
+	display: none;
+	position: absolute;
+	width: 40px;
+	height: 40px;
+	font-size: 30px;
+	text-align: center;
+	right: -10px;
+	top: -10px;
+}
+
+.yf-preview .yf-error-mark {
+	background-position: -268px -123px;
+}
+
+.yf-preview .yf-success-mark {
+	background-position: -268px -163px;
+}
+
+.yf-preview.yf-error .yf-error-mark,
+.yf-preview.yf-done .yf-success-mark {
+	display: block;
+}
