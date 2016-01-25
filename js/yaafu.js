@@ -194,7 +194,7 @@
 			if (fileAdded.file.type.match('audio.*')) {
 				fileAdded.$element.addClass('yf-audio');
 				fileAdded.$element.find('.yf-bg').attr('style',"background-image: url("+this.options.audioThumb+")");
-				fileAdded.$element.find('.yf-details').append('<audio class="yf-audioFile" src="'+e.target.result+'"></audio>')
+				fileAdded.$element.find('.yf-details').append('<audio class="yf-audioFile" src="'+url+'"></audio>')
 			}
 
 			// Make for video
