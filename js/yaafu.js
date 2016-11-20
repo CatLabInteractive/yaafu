@@ -50,6 +50,14 @@
 			previewTemplate: "<div class=\"yf-preview yf-file-preview yf-processing\">\n <div class=\"yf-details\">\n    <div class=\"yf-bg\"></div>\n  <div class=\"yf-progress\"><span class=\"yf-upload\" data-yf-uploadprogress></span></div>\n  <div class=\"yf-success-mark\"></div>\n  <div class=\"yf-error-mark\"></div>\n  <div class=\"yf-error-message\"><span data-yf-errormessage></span></div></div>",
 			removeButton: "<div class='yf-remove'></div>",
 			audioThumb: null,
+            /*
+             * default buttons' classes
+             * you can specify your classes for play and pause buttons
+             * just set playButtonClass and/or pauseButtonClass when calling yaafu
+             * and declare appropriate classes with background styles in your stylesheet
+             */
+            playButtonClass: 'yf-play-button',
+            pauseButtonClass: 'yf-pause-button',
 			singleUpload: "<input type='file' id='yf-select' name='files[]'/>",
 			multipleUpload: "<input type='file' id='yf-select' multiple name='files[]'/>",
 
@@ -193,7 +201,8 @@
 
 			if (fileAdded.file.type.match('audio.*')) {
 				fileAdded.$element.addClass('yf-audio');
-				fileAdded.$element.find('.yf-bg').attr('style',"background-image: url("+this.options.audioThumb+")");
+                // add play button when rendering
+                fileAdded.$element.find('.yf-bg').addClass(this.options.playButtonClass);
 				fileAdded.$element.find('.yf-details').append('<audio class="yf-audioFile" src="'+url+'"></audio>')
 			}
 
@@ -224,15 +233,30 @@
 				fileAdded.$element.find('.yf-details').click(function(){
 					if (!fileAdded.$element.hasClass('yf-play')){
 						fileAdded.$element.find('.yf-audioFile')[0].play();
+                        fileAdded.$element.find('.yf-bg')
+                            .removeClass(self.options.playButtonClass)
+                            .addClass(self.options.pauseButtonClass);
 						fileAdded.$element.addClass('yf-play');
 					}
 
 					else {
 						fileAdded.$element.find('.yf-audioFile')[0].pause();
+                        fileAdded.$element.find('.yf-bg')
+                            .removeClass(self.options.pauseButtonClass)
+                            .addClass(self.options.playButtonClass);
 						fileAdded.$element.removeClass('yf-play');
 					}
 				});
 			}
+
+            // after finishing playing
+            fileAdded.$element.find('.yf-audioFile')[0].addEventListener('ended', function () {
+                this.currentTime = 0;
+                fileAdded.$element.find('.yf-bg')
+                    .removeClass(self.options.pauseButtonClass)
+                    .addClass(self.options.playButtonClass);
+                fileAdded.$element.removeClass('yf-play');
+            });
 		},
 
 		handleDragOver: function(evt) {

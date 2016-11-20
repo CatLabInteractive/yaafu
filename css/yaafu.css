@@ -118,3 +118,11 @@
 #yf-select {
 	display: none;
 }
+
+/* default play & pause buttons */
+.yf-play-button {
+	background: url('../images/play.svg') no-repeat center center;
+}
+.yf-pause-button {
+	background: url('../images/pause.svg') no-repeat center center;
+}
