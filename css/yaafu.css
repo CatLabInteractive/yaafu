@@ -44,6 +44,8 @@
 
 .yf-preview .yf-bg {
 	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
 	overflow: hidden;
 	border-radius: 50%;
 	width: 100px;
@@ -121,8 +123,8 @@
 
 /* default play & pause buttons */
 .yf-play-button {
-	background: url('../images/play.svg') no-repeat center center;
+	background: url('../images/play.svg');
 }
 .yf-pause-button {
-	background: url('../images/pause.svg') no-repeat center center;
+	background: url('../images/pause.svg');
 }
