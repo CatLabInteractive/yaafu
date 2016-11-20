@@ -247,16 +247,17 @@
 						fileAdded.$element.removeClass('yf-play');
 					}
 				});
+
+				// after finishing playing
+				fileAdded.$element.find('.yf-audioFile')[0].addEventListener('ended', function () {
+					this.currentTime = 0;
+					fileAdded.$element.find('.yf-bg')
+						.removeClass(self.options.pauseButtonClass)
+						.addClass(self.options.playButtonClass);
+					fileAdded.$element.removeClass('yf-play');
+				});
 			}
 
-            // after finishing playing
-            fileAdded.$element.find('.yf-audioFile')[0].addEventListener('ended', function () {
-                this.currentTime = 0;
-                fileAdded.$element.find('.yf-bg')
-                    .removeClass(self.options.pauseButtonClass)
-                    .addClass(self.options.playButtonClass);
-                fileAdded.$element.removeClass('yf-play');
-            });
 		},
 
 		handleDragOver: function(evt) {
