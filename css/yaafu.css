@@ -148,3 +148,6 @@
 .yf-video-popup video {
     width: 100%;
 }
+.yf-disable-scroll {
+    overflow-y: hidden;
+}

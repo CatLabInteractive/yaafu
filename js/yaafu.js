@@ -274,12 +274,12 @@
                     var exitPopup = function () {
                         body.find('.yf-video-window').remove();
                         popupVideo.off('click');
-                        body.css('overflow', 'scroll');
+                        body.removeClass('yf-disable-scroll');
                     };
 
                 	// disable unexpected behaviour and disable scroll
                     e.stopPropagation();
-                    body.css('overflow', 'hidden');
+                    body.addClass('yf-disable-scroll');
 
                 	// create popup on body
                     body.append(self.options.videoPopupTemplate);
