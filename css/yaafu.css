@@ -128,3 +128,23 @@
 .yf-pause-button {
 	background: url('../images/pause.svg');
 }
+
+/* popup for video play */
+.yf-video-window {
+    z-index: 999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, .8);
+}
+.yf-video-popup {
+    width: 80%;
+    position: absolute;
+    left: 10%;
+    top: 2%;
+}
+.yf-video-popup video {
+    width: 100%;
+}

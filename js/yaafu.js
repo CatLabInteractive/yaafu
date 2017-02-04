@@ -34,20 +34,21 @@
 			endpoint: '/',
 			headers: {},
 
-			populate: [],                               // Default files already added as default
-			showPreview: true,                          // Show a base64 preview while uploading the image.
-			sync: null,                                 // Sync functionality through callback
-			uploadBtn: false,                           // Allow submit actions to be handled by yaafu
-			multipleFiles: true,                        // Allow multiple file upload
-			allowedFileTypes: ['image.*', 'audio.*'],   // Allowed file types
-			maxNumFiles: 0,                             // Maximum number of all files -> 0 == unlimited
-			multipleFilesType: false,                   // Multiple files per filetype
-			renderRemoveBtn: true,                      // Add remove button
+			populate: [],                                          // Default files already added as default
+			showPreview: true,                                     // Show a base64 preview while uploading the image.
+			sync: null,                                            // Sync functionality through callback
+			uploadBtn: false,                                      // Allow submit actions to be handled by yaafu
+			multipleFiles: true,                                   // Allow multiple file upload
+			allowedFileTypes: ['image.*', 'audio.*', 'video.*'],   // Allowed file types !!!!!! remember - only 3 video formats are supported
+			maxNumFiles: 0,                                        // Maximum number of all files -> 0 == unlimited
+			multipleFilesType: false,                              // Multiple files per filetype
+			renderRemoveBtn: true,                                 // Add remove button
 			showError: true,
 			showDone: false,
 
 			uploadTemplate: "<button class=\"btn btn-default\">Upload</button>",
 			previewTemplate: "<div class=\"yf-preview yf-file-preview yf-processing\">\n <div class=\"yf-details\">\n    <div class=\"yf-bg\"></div>\n  <div class=\"yf-progress\"><span class=\"yf-upload\" data-yf-uploadprogress></span></div>\n  <div class=\"yf-success-mark\"></div>\n  <div class=\"yf-error-mark\"></div>\n  <div class=\"yf-error-message\"><span data-yf-errormessage></span></div></div>",
+			videoPopupTemplate: '<div class="yf-video-window"><div class="yf-video-popup"><video controls></video></div></div>',
 			removeButton: "<div class='yf-remove'></div>",
 			audioThumb: null,
             /*
@@ -206,7 +207,11 @@
 				fileAdded.$element.find('.yf-details').append('<audio class="yf-audioFile" src="'+url+'"></audio>')
 			}
 
-			// Make for video
+			if (fileAdded.file.type.match('video.*')) {
+                fileAdded.$element.addClass('yf-video');
+                fileAdded.$element.find('.yf-bg').addClass(this.options.playButtonClass);
+                fileAdded.$element.find('.yf-details').data('url', url);
+			}
 		},
 
 		addTriggers: function(fileAdded) {
@@ -258,7 +263,74 @@
 				});
 			}
 
+			// Play video (open popup)
+            if (fileAdded.file.type.match('video.*')){
+
+                fileAdded.$element.find('.yf-details').click(function (e) {
+
+                    var body = $('body');
+
+                    // exit from popup: remove popup with it, remove events and enable scroll
+                    var exitPopup = function () {
+                        body.find('.yf-video-window').remove();
+                        popupVideo.off('click');
+                        body.css('overflow', 'scroll');
+                    };
+
+                	// disable unexpected behaviour and disable scroll
+                    e.stopPropagation();
+                    body.css('overflow', 'hidden');
+
+                	// create popup on body
+                    body.append(self.options.videoPopupTemplate);
+
+                    // append source to it
+                    var popupVideo = body.find('.yf-video-popup video');
+                    popupVideo.append('<source src="'+fileAdded.$element.find('.yf-details').data('url')+'" type="'+self.getExactType(fileAdded)+'">');
+
+                    // start playing video when popup opened
+                    popupVideo.get(0).play();
+
+                    // play/pause video when click on it
+                    popupVideo.on('click', function (e) {
+                        e.stopPropagation();
+                        if (this.paused) {
+                            this.play();
+                        } else {
+                            this.pause();
+                        }
+                    });
+
+                    // exit when video has ended
+                    popupVideo.on('ended', function () {
+                        exitPopup();
+                    });
+
+                    // exit when click outside the popup
+                    body.click(function () {
+                        exitPopup();
+                    }).on('click', '.yf-video-popup', function (e) {
+                        e.stopPropagation();
+                    });
+                });
+			}
+
 		},
+
+		/*
+		 * if fileAdded.file.type already consists all information about type: video/mp4 for example then return it
+		 * else get file extension from fileAdded.file.url and add it to the type
+		 */
+        getExactType: function (fileAdded) {
+
+			var parsedType = fileAdded.file.type;
+
+            if (fileAdded.file.type.split("/").length == 1) {
+				parsedType = fileAdded.file.type + '/' + fileAdded.file.url.split(".").pop();
+            }
+
+            return parsedType;
+        },
 
 		handleDragOver: function(evt) {
 
