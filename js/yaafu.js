@@ -323,13 +323,17 @@
 		 */
         getExactType: function (fileAdded) {
 
-			var parsedType = fileAdded.file.type;
+        	if (typeof(fileAdded.file.mimetype) !== 'undefined') {
+        		return fileAdded.file.mimetype;
+			} else {
+                var parsedType = fileAdded.file.type;
 
-            if (fileAdded.file.type.split("/").length == 1) {
-				parsedType = fileAdded.file.type + '/' + fileAdded.file.url.split(".").pop();
+                if (fileAdded.file.type.split("/").length == 1) {
+                    parsedType = fileAdded.file.type + '/' + fileAdded.file.url.split(".").pop();
+                }
+
+                return parsedType;
             }
-
-            return parsedType;
         },
 
 		handleDragOver: function(evt) {
