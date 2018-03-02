@@ -4,13 +4,16 @@
   "homepage": "https://github.com/CatLabInteractive/yaafu",
   "authors": [
     "Thijs Van der Schaeghe <thijs@catlab.be>",
-	"Rui Molefas <rui@catlab.be>"
+    "Rui Molefas <rui@catlab.be>"
   ],
   "description": "Yaafu is yet another ajax file uploader",
   "main": "js/yaafu.js",
   "moduleType": [
     "amd"
   ],
+  "require" : {
+    "jQuery": "^1.6"
+  },
   "keywords": [
     "yaafu",
     "javascript",
