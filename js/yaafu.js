@@ -36,6 +36,7 @@
             populate: [],                                          // Default files already added as default
             showPreview: true,                                     // Show a base64 preview while uploading the image.
             sync: null,                                            // Sync functionality through callback
+            error: null,                                           // Error callback
             uploadBtn: false,                                      // Allow submit actions to be handled by yaafu
             multipleFiles: true,                                   // Allow multiple file upload
             allowedFileTypes: ['image.*', 'audio.*', 'video.*'],   // Allowed file types !!!!!! remember - only 3 video formats are supported
@@ -426,6 +427,13 @@
                 this.addTriggers(fileAdded);
             }
 
+            setTimeout(function() {
+                if (this.options.error) {
+                    this.options.error(serverResponse.response.error);
+                }
+            }.bind(this), 1);
+
+            this.sync();
         },
 
         uploadCanceled: function (evt) {
@@ -460,13 +468,13 @@
 
             this.uploaded.push(fileAdded);
 
-            this.sync();
+            this.sync(true);
         },
 
-        sync: function () {
+        sync: function (isUpload) {
 
             if (this.options.sync)
-                this.options.sync(this.uploaded)
+                this.options.sync(this.uploaded, isUpload)
         },
 
         createElement: function (string) {
